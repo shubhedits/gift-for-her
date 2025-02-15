@@ -1,19 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Letter</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Love Letter Just For You</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffe6f0, #ffffff);
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+    }
+    h1 {
+      color: #e91e63;
+      margin-top: 20px;
+    }
+    /* Top Decorations */
+    .top-decorations {
+      position: relative;
+      height: 150px;
+      margin-bottom: 20px;
+    }
+    .top-decorations img {
+      width: 120px;
+      position: absolute;
+      top: 0;
+    }
+    .top-decorations img.top-left {
+      left: 20px;
+    }
+    .top-decorations img.top-right {
+      right: 20px;
+    }
+    /* Letter Paper Container */
+    .letter-paper {
+      background: #fffdf0;
+      width: 80%;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 60px 40px;
+      border: 2px solid #f8c8dc;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      position: relative;
+      overflow: visible;
+    }
+    .letter-text {
+      text-align: left;
+      font-size: 18px;
+      color: #333;
+      line-height: 1.6;
+      position: relative;
+      z-index: 2;
+    }
+    /* Bottom Decorations */
+    .letter-paper img.bottom {
+      width: 120px;
+      position: absolute;
+      z-index: 1;
+    }
+    .letter-paper img.bottom-left {
+      bottom: -120px;
+      left: -120px;
+    }
+    .letter-paper img.bottom-right {
+      bottom: -120px;
+      right: -120px;
+    }
+    /* Review Panel */
+    .review-panel {
+      margin: 30px auto;
+      width: 80%;
+      max-width: 600px;
+      background: #fff;
+      border: 2px dashed #f8c8dc;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .review-panel h2 {
+      color: #e91e63;
+      margin-bottom: 10px;
+    }
+    .stars {
+      margin: 10px 0;
+    }
+    .stars span {
+      font-size: 30px;
+      cursor: pointer;
+      color: #ccc;
+      padding: 0 5px;
+    }
+    .stars span.selected {
+      color: #ffcc00;
+    }
+    .review-panel textarea {
+      width: 100%;
+      height: 80px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+      font-size: 16px;
+      display: block;
+      margin: 10px auto;
+    }
+    .next-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 20px;
+      background: #ff69b4;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <h1>Love Letter 💌</h1>
+  <h1>A Love Letter Just For You</h1>
+  
+  <!-- Top Decorations -->
+  <div class="top-decorations">
+    <img src="assets/images/cute1.gif" class="top-left" alt="Cute Decoration">
+    <img src="assets/images/cute2.gif" class="top-right" alt="Cute Decoration">
+  </div>
+  
+  <div class="letter-paper">
+    <!-- Bottom Decorations -->
+    <img src="assets/images/cute3.gif" class="bottom bottom-left" alt="Cute Decoration">
+    <img src="assets/images/cute4.gif" class="bottom bottom-right" alt="Cute Decoration">
     
-    <div id="letter-container">
-        <p>Lovu,</p>
-        <p>You’re one of the best parts of my life...</p>
+    <div class="letter-text">
+      <p>Lovu,</p>
+      <p>You’re one of the best parts of my life. I appreciate you being with me every day—I love you more than anything and cherish every moment we share.</p>
+      <p>You make my life so fulfilled, and I still remember the day we met on that goofy comment section. I never imagined that such a lighthearted encounter could blossom into the deep, beautiful love we share today.</p>
+      <p>Every time I see your smile or hear your laugh, I feel an overwhelming sense of joy and gratitude. You bring out the best in me and inspire me to be the best version of myself.</p>
+      <p>Our journey together is filled with memories that I hold dear. Every new day with you adds a special chapter to my life.</p>
+      <p>Just as you love me with all your heart, I hope you will always love yourself with equal passion. You deserve all the happiness and care in the world.</p>
+      <p>When life gets challenging, remember that I am always here to support you, to remind you of your strength, and to celebrate the wonderful person you are.</p>
+      <p>Thank you for being my confidante, my partner, and my best friend. I am excited for all the adventures and quiet moments we have yet to experience.</p>
+      <p>No matter where life takes us, know that my heart is forever with you.</p>
+      <p style="font-size: 22px; color: #e91e63;">I love you. ❤️</p>
     </div>
-
-    <button onclick="window.location.href='final-gift.html'">Next</button>
+  </div>
+  
+  <!-- Review Panel -->
+  <div class="review-panel">
+    <h2>take a screenshot and send it in my dms bbg</h2>
+    <div class="stars" id="starRating">
+      <span data-value="1">&#9733;</span>
+      <span data-value="2">&#9733;</span>
+      <span data-value="3">&#9733;</span>
+      <span data-value="4">&#9733;</span>
+      <span data-value="5">&#9733;</span>
+    </div>
+    <textarea placeholder="Write your review here..."></textarea>
+    <br>
+    <button class="next-button" onclick="goToGift()">Next</button>
+  </div>
+  
+  <script>
+    const stars = document.querySelectorAll('#starRating span');
+    stars.forEach(star => {
+      star.addEventListener('click', function() {
+        const rating = this.getAttribute('data-value');
+        stars.forEach(s => {
+          if (s.getAttribute('data-value') <= rating) {
+            s.classList.add('selected');
+          } else {
+            s.classList.remove('selected');
+          }
+        });
+      });
+    });
+    
+    function goToGift() {
+      window.location.href = 'final-gift.html';
+    }
+  </script>
 </body>
 </html>
