@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz - How Well Do You Know Us?</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffe6f0, #ffffff);
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #e91e63;
+    }
+    img {
+      max-width: 100%;
+    }
+    .question {
+      margin-bottom: 40px;
+    }
+    .question h2 {
+      font-size: 20px;
+      color: #e91e63;
+    }
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .draggable {
+      padding: 10px 15px;
+      background: #ffb6c1;
+      border: 2px solid #e91e63;
+      border-radius: 5px;
+      cursor: grab;
+      user-select: none;
+    }
+    .dropzone {
+      margin-top: 20px;
+      padding: 20px;
+      background: #fff0f5;
+      border: 2px dashed #e91e63;
+      border-radius: 5px;
+      min-height: 40px;
+    }
+    #submitButton {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #ff69b4;
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: none;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 20px;
+      background: #ffe6f0;
+      border: 2px solid #e91e63;
+      border-radius: 5px;
+      display: none;
+    }
+    #result h2 {
+      color: #e91e63;
+    }
+    #result button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #ff69b4;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>How Well Do You Know Us? - A Fun Quiz</h1>
+    <img src="kissing.gif" alt="Cute Kissing Gif" style="width:200px; margin:20px 0;">
+    
+    <div id="quizSection">
+      <!-- Question 1 -->
+      <div class="question">
+        <h2>1. What is Loveleen’s favorite nickname that Rishu calls her?</h2>
+        <div class="options">
+          <div class="draggable" draggable="true" data-value="Lovu">Lovu</div>
+          <div class="draggable" draggable="true" data-value="BUGGU">BUGGU</div>
+          <div class="draggable" draggable="true" data-value="Puchki">Puchki</div>
+          <div class="draggable" draggable="true" data-value="Bebo">Bebo</div>
+        </div>
+        <div class="dropzone" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="question">
+        <h2>2. If Loveleen could change one thing about herself, what would it be?</h2>
+        <div class="options">
+          <div class="draggable" draggable="true" data-value="Her height">Her height</div>
+          <div class="draggable" draggable="true" data-value="Her hands">Her hands</div>
+          <div class="draggable" draggable="true" data-value="Her forehead">Her forehead</div>
+          <div class="draggable" draggable="true" data-value="Her smile">Her smile</div>
+        </div>
+        <div class="dropzone" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="question">
+        <h2>3. What kind of surprise makes Loveleen the happiest?</h2>
+        <div class="options">
+          <div class="draggable" draggable="true" data-value="A heartfelt letter">A heartfelt letter</div>
+          <div class="draggable" draggable="true" data-value="A fancy handbag">A fancy handbag</div>
+          <div class="draggable" draggable="true" data-value="A cute cat">A cute cat</div>
+          <div class="draggable" draggable="true" data-value="A luxury perfume">A luxury perfume</div>
+        </div>
+        <div class="dropzone" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="question">
+        <h2>4. What’s something Rishu always reminds Loveleen is the cutest thing about her?</h2>
+        <div class="options">
+          <div class="draggable" draggable="true" data-value="Her sleepy face">Her sleepy face</div>
+          <div class="draggable" draggable="true" data-value="The way she pouts when she's mad">The way she pouts when she's mad</div>
+          <div class="draggable" draggable="true" data-value="Her tiny hands">Her tiny hands</div>
+          <div class="draggable" draggable="true" data-value="The way she randomly acts all cute without realizing it">The way she randomly acts all cute without realizing it</div>
+        </div>
+        <div class="dropzone" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="question">
+        <h2>5. How does Rishu feel about the time he and Loveleen spent apart?</h2>
+        <div class="options">
+          <div class="draggable" draggable="true" data-value="It felt like forever">It felt like forever</div>
+          <div class="draggable" draggable="true" data-value="It didn’t matter much">It didn’t matter much</div>
+          <div class="draggable" draggable="true" data-value="It was needed for growth">It was needed for growth</div>
+          <div class="draggable" draggable="true" data-value="He completely forgot about it">He completely forgot about it</div>
+        </div>
+        <div class="dropzone" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+
+      <!-- Question 6 -->
+      <div class="question">
+        <h2>6. If Loveleen had to pick one thing she loves most about Rishu, what would it be?</h2>
+        <div class="options">
+          <div class="draggable" draggable="true" data-value="His jokes">His jokes</div>
+          <div class="draggable" draggable="true" data-value="His way of making her feel special">His way of making her feel special</div>
+          <div class="draggable" draggable="true" data-value="His hair">His hair</div>
+          <div class="draggable" draggable="true" data-value="His editing skills">His editing skills</div>
+        </div>
+        <div class="dropzone" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+
+      <!-- Question 7 -->
+      <div class="question">
+        <h2>7. What’s a perfect date for Rishu and Loveleen?</h2>
+        <div class="options">
+          <div class="draggable" draggable="true" data-value="A fancy restaurant dinner">A fancy restaurant dinner</div>
+          <div class="draggable" draggable="true" data-value="A long drive with music">A long drive with music</div>
+          <div class="draggable" draggable="true" data-value="Watching movies at home">Watching movies at home</div>
+          <div class="draggable" draggable="true" data-value="Staying at home and fucking">Staying at home and fucking</div>
+        </div>
+        <div class="dropzone" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+
+      <!-- Question 8 -->
+      <div class="question">
+        <h2>8. What’s one thing Rishu would NEVER forget about Loveleen?</h2>
+        <div class="options">
+          <div class="draggable" draggable="true" data-value="Her first message to him">Her first message to him</div>
+          <div class="draggable" draggable="true" data-value="Her favorite food">Her favorite food</div>
+          <div class="draggable" draggable="true" data-value="The way she looks at him when she’s happy">The way she looks at him when she’s happy</div>
+          <div class="draggable" draggable="true" data-value="The way she gets mad at him">The way she gets mad at him</div>
+        </div>
+        <div class="dropzone" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+    </div>
+    
+    <button id="submitButton" onclick="submitQuiz()">Submit</button>
+    
+    <div id="result">
+      <h2>10/10</h2>
+      <p>OMMGGG YOU KNOW MEEE LOVE MUCHH, let's get married now you cute ass goblin.</p>
+      <button onclick="goToFinal()">Next</button>
+    </div>
+  </div>
+
+  <script>
+    // Set up draggable events for each answer option
+    const draggables = document.querySelectorAll('.draggable');
+    draggables.forEach(item => {
+      item.addEventListener('dragstart', dragStart);
+    });
+
+    function dragStart(event) {
+      event.dataTransfer.setData("text/plain", event.target.getAttribute('data-value'));
+    }
+
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drop(event) {
+      event.preventDefault();
+      const data = event.dataTransfer.getData("text/plain");
+      const dropzone = event.currentTarget;
+      // Only allow drop if the dropzone is empty
+      if (dropzone.children.length === 0) {
+        dropzone.innerHTML = `<div class="draggable" draggable="false">${data}</div>`;
+        checkAllAnswered();
+      }
+    }
+
+    function checkAllAnswered() {
+      const questions = document.querySelectorAll('.question');
+      let allAnswered = true;
+      questions.forEach(q => {
+        const dropzone = q.querySelector('.dropzone');
+        if (dropzone.children.length === 0) {
+          allAnswered = false;
+        }
+      });
+      if (allAnswered) {
+        document.getElementById('submitButton').style.display = 'inline-block';
+      }
+    }
+
+    function submitQuiz() {
+      // When the quiz is submitted, hide the quiz section and show the result
+      document.getElementById('quizSection').style.display = 'none';
+      document.getElementById('submitButton').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+    }
+
+    function goToFinal() {
+      window.location.href = 'final.html';
+    }
+  </script>
+</body>
+</html>

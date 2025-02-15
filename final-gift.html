@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Special Gift</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffe6f0, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      position: relative;
+    }
+    .gift-container {
+      text-align: center;
+      position: relative;
+    }
+    .gift-button {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: #ff69b4;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .gift-button:focus {
+      outline: none;
+    }
+    /* Arrow pointing at the gift button */
+    .arrow {
+      position: absolute;
+      top: -80px;
+      left: calc(50% - 20px);
+      font-size: 40px;
+      color: #e91e63;
+      animation: bounce 1s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #e91e63;
+    }
+  </style>
+</head>
+<body>
+  <div class="gift-container">
+    <div class="arrow">&#8595;</div>
+    <button class="gift-button" onclick="showGiftMessage()">Gift</button>
+    <div class="message" id="giftMessage"></div>
+  </div>
+  
+  <!-- Sound effect element -->
+  <audio id="clickSound" src="click.mp3"></audio>
+  
+  <script>
+    function showGiftMessage() {
+      // Play sound effect on button click
+      document.getElementById('clickSound').play();
+      // Show the playful message
+      document.getElementById('giftMessage').textContent = "chut dikhao😉😏";
+    }
+  </script>
+</body>
+</html>
