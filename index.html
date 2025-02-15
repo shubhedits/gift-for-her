@@ -79,10 +79,6 @@
     </div>
   </div>
 
-  <audio id="bgm" src="bgm.mp3" loop></audio>
-  <audio id="winSound" src="win.mp3"></audio>
-  <audio id="gameOverSound" src="gameover.mp3"></audio>
-
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -92,10 +88,6 @@
     let gameStarted = false;
     let bombInterval;
     const bombs = [];
-
-    const bgm = document.getElementById('bgm');
-    const winSound = document.getElementById('winSound');
-    const gameOverSound = document.getElementById('gameOverSound');
 
     const bucket = { x: canvas.width / 2 - 40, y: canvas.height - 100, width: 80, height: 50, image: new Image() };
     bucket.image.src = 'bucket.png';
@@ -107,7 +99,6 @@
       document.getElementById('startButton').style.display = 'none';
       document.getElementById('gameContainer').style.display = 'block';
       gameStarted = true;
-      bgm.play(); 
       requestAnimationFrame(gameLoop);
       bombInterval = setInterval(spawnBomb, 2500);
     }
@@ -121,7 +112,6 @@
       document.getElementById('message').style.display = 'none';
       document.getElementById('retryButton').style.display = 'none';
       document.getElementById('nextButton').style.display = 'none';
-      bgm.play(); 
       requestAnimationFrame(gameLoop);
       bombInterval = setInterval(spawnBomb, 2500);
     }
@@ -183,24 +173,32 @@
     function endGame(message, win) {
       gameOver = true;
       clearInterval(bombInterval);
-      bgm.pause();
-      bgm.currentTime = 0;
-      
-      if (win) {
-        winSound.play();
-        document.getElementById('nextButton').style.display = 'inline-block';
-      } else {
-        gameOverSound.play();
-        document.getElementById('retryButton').style.display = 'inline-block';
-      }
-
       document.getElementById('resultText').textContent = message;
       document.getElementById('message').style.display = 'block';
+      document.getElementById(win ? 'nextButton' : 'retryButton').style.display = 'inline-block';
     }
 
     function goToQuiz() {
       window.location.href = 'quiz.html';
     }
+
+    function gameLoop() {
+      if (!gameStarted || gameOver) return;
+      update();
+      draw();
+      requestAnimationFrame(gameLoop);
+    }
+
+    canvas.addEventListener("touchstart", (e) => e.preventDefault(), { passive: false });
+    canvas.addEventListener("touchmove", (e) => {
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      bucket.x = touch.clientX - rect.left - bucket.width / 2;
+      if (bucket.x < 0) bucket.x = 0;
+      if (bucket.x + bucket.width > canvas.width) bucket.x = canvas.width - bucket.width;
+    }, { passive: false });
+
+    bucket.image.onload = () => heart.image.onload = () => requestAnimationFrame(gameLoop);
   </script>
 
 </body>
