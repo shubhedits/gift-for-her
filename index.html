@@ -13,34 +13,31 @@
       font-family: 'Poppins', sans-serif;
       text-align: center;
     }
-    /* Title styling */
+    
     h1 {
       color: #e91e63;
-      margin-top: 20px;
       font-size: 36px;
-    }
-    /* Start Button */
-    #startButton {
-      padding: 15px 30px;
-      font-size: 20px;
-      background: #ff69b4;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
       margin-top: 20px;
-      transition: 0.3s;
     }
-    #startButton:hover {
-      background: #e91e63;
+
+    #startButton, #retryButton, #nextButton {
+      padding: 12px 24px;
+      font-size: 18px;
+      background: #ff69b4;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px;
     }
-    /* Game Container (Hidden initially) */
+
     #gameContainer {
       width: 420px;
       margin: 30px auto;
       position: relative;
-      display: none; /* Initially hidden */
+      display: none;
     }
+
     canvas {
       display: block;
       width: 400px;
@@ -49,7 +46,7 @@
       border-radius: 15px;
       box-shadow: 0px 10px 20px rgba(0,0,0,0.3);
     }
-    /* Message Overlay */
+
     #message {
       position: absolute;
       top: 50%;
@@ -65,29 +62,13 @@
       text-align: center;
       z-index: 10;
     }
-    #nextButton, #retryButton {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 18px;
-      background: #ff69b4;
-      border: none;
-      color: white;
-      cursor: pointer;
-      border-radius: 5px;
-    }
   </style>
 </head>
 <body>
 
   <h1>Catch My Heart</h1>
-  
-  <!-- Start Button -->
-  <button id="startButton" onclick="startGame()">Start</button>
 
-  <!-- Background Music -->
-  <audio id="bgm" src="bgm.mp3" loop></audio>
-  <audio id="gameOverSound" src="gameover.mp3"></audio>
-  <audio id="winSound" src="win.mp3"></audio>
+  <button id="startButton" onclick="startGame()">Start Game</button>
 
   <div id="gameContainer">
     <canvas id="gameCanvas" width="400" height="600"></canvas>
@@ -99,74 +80,48 @@
   </div>
 
   <script>
-    let gameStarted = false;
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+
     let gameOver = false;
     let heartsCaught = 0;
+    let gameStarted = false;
+    let bombInterval;
     const bombs = [];
 
-    // Array of messages when losing
-    const loseMessages = [
-      "BUGGGU, TRY AGAIN LOVE!",
-      "My love, I know you can do it!",
-      "Don't give up, my love!",
-      "Keep going, my darling!",
-      "One more try, love!"
-    ];
+    const bucket = { x: canvas.width / 2 - 40, y: canvas.height - 100, width: 80, height: 50, image: new Image() };
+    bucket.image.src = 'bucket.png';
 
-    // Bucket (moves with mouse)
-    const bucket = {
-      x: canvas.width / 2 - 40,
-      y: canvas.height - 50,
-      width: 80,
-      height: 50,
-      image: new Image()
-    };
-    bucket.image.src = 'bucket.png'; 
-
-    // Heart object
-    const heart = {
-      x: Math.random() * (canvas.width - 30),
-      y: 0,
-      width: 30,
-      height: 30,
-      speed: 2 + Math.random() * 2,
-      dx: 1.5,
-      image: new Image()
-    };
+    const heart = { x: Math.random() * (canvas.width - 30), y: 0, width: 30, height: 30, speed: 3, dx: 1.5, image: new Image() };
     heart.image.src = 'heart.png';
 
-    // Bomb properties
-    const bombWidth = 30, bombHeight = 30;
-    function spawnBomb() {
-      const bomb = {
-        x: Math.random() * (canvas.width - bombWidth),
-        y: -bombHeight,
-        speed: 3 + Math.random() * 2,
-        image: new Image()
-      };
-      bomb.image.src = 'bomb.png';
-      bombs.push(bomb);
+    function startGame() {
+      document.getElementById('startButton').style.display = 'none';
+      document.getElementById('gameContainer').style.display = 'block';
+      gameStarted = true;
+      requestAnimationFrame(gameLoop);
+      bombInterval = setInterval(spawnBomb, 2500);
     }
-    let bombInterval;
 
-    // Mouse movement for bucket
-    canvas.addEventListener('mousemove', function(e) {
-      const rect = canvas.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      bucket.x = mouseX - bucket.width / 2;
-      if (bucket.x < 0) bucket.x = 0;
-      if (bucket.x + bucket.width > canvas.width) bucket.x = canvas.width - bucket.width;
-    });
+    function retryGame() {
+      gameOver = false;
+      heartsCaught = 0;
+      bombs.length = 0;
+      heart.x = Math.random() * (canvas.width - 30);
+      heart.y = 0;
+      document.getElementById('message').style.display = 'none';
+      document.getElementById('retryButton').style.display = 'none';
+      document.getElementById('nextButton').style.display = 'none';
+      requestAnimationFrame(gameLoop);
+      bombInterval = setInterval(spawnBomb, 2500);
+    }
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(bucket.image, bucket.x, bucket.y, bucket.width, bucket.height);
       ctx.drawImage(heart.image, heart.x, heart.y, heart.width, heart.height);
-      bombs.forEach(bomb => ctx.drawImage(bomb.image, bomb.x, bomb.y, bombWidth, bombHeight));
+      bombs.forEach(bomb => ctx.drawImage(bomb.image, bomb.x, bomb.y, 30, 30));
 
-      // Score display
       ctx.fillStyle = "#e91e63";
       ctx.font = "18px Arial";
       ctx.fillText("Hearts: " + heartsCaught + "/10", 10, 25);
@@ -179,28 +134,27 @@
       if (heart.x <= 0 || heart.x + heart.width >= canvas.width) heart.dx = -heart.dx;
       if (heart.y > canvas.height) resetHeart();
 
-      // Check collision for heart and bucket
-      if (heart.y + heart.height >= bucket.y &&
-          heart.x + heart.width >= bucket.x &&
-          heart.x <= bucket.x + bucket.width) {
+      if (heart.y + heart.height >= bucket.y && heart.x + heart.width >= bucket.x && heart.x <= bucket.x + bucket.width) {
         heartsCaught++;
         if (heartsCaught >= 10) {
           endGame("You caught 10 hearts! You caught my heart!", true);
           return;
-        } else resetHeart();
+        }
+        resetHeart();
       }
 
-      // Update bombs and check collisions
-      bombs.forEach((bomb, i) => {
+      for (let i = 0; i < bombs.length; i++) {
+        let bomb = bombs[i];
         bomb.y += bomb.speed;
-        if (bomb.y + bombHeight >= bucket.y &&
-            bomb.x + bombWidth >= bucket.x &&
-            bomb.x <= bucket.x + bucket.width) {
-          endGame("", false);
+        if (bomb.y + 30 >= bucket.y && bomb.x + 30 >= bucket.x && bomb.x <= bucket.x + bucket.width) {
+          endGame("Oh no! You hit a bomb!", false);
           return;
         }
-        if (bomb.y > canvas.height) bombs.splice(i, 1);
-      });
+        if (bomb.y > canvas.height) {
+          bombs.splice(i, 1);
+          i--;
+        }
+      }
     }
 
     function resetHeart() {
@@ -210,29 +164,42 @@
       heart.dx = (Math.random() < 0.5 ? -1 : 1) * (1 + Math.random());
     }
 
+    function spawnBomb() {
+      const bomb = { x: Math.random() * (canvas.width - 30), y: -30, speed: 3 + Math.random() * 2, image: new Image() };
+      bomb.image.src = 'bomb.png';
+      bombs.push(bomb);
+    }
+
     function endGame(message, win) {
       gameOver = true;
       clearInterval(bombInterval);
-      if (!win) message = loseMessages[Math.floor(Math.random() * loseMessages.length)];
       document.getElementById('resultText').textContent = message;
       document.getElementById('message').style.display = 'block';
-      win ? document.getElementById('nextButton').style.display = 'inline-block' 
-          : document.getElementById('retryButton').style.display = 'inline-block';
+      document.getElementById(win ? 'nextButton' : 'retryButton').style.display = 'inline-block';
     }
 
-    function startGame() {
-      document.getElementById('startButton').style.display = 'none';
-      document.getElementById('gameContainer').style.display = 'block';
-      document.getElementById('bgm').play();
-      bombInterval = setInterval(spawnBomb, 2500);
-      requestAnimationFrame(gameLoop);
+    function goToQuiz() {
+      window.location.href = 'quiz.html';
     }
 
     function gameLoop() {
+      if (!gameStarted || gameOver) return;
       update();
       draw();
-      if (!gameOver) requestAnimationFrame(gameLoop);
+      requestAnimationFrame(gameLoop);
     }
+
+    canvas.addEventListener("touchstart", (e) => e.preventDefault(), { passive: false });
+    canvas.addEventListener("touchmove", (e) => {
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      bucket.x = touch.clientX - rect.left - bucket.width / 2;
+      if (bucket.x < 0) bucket.x = 0;
+      if (bucket.x + bucket.width > canvas.width) bucket.x = canvas.width - bucket.width;
+    }, { passive: false });
+
+    bucket.image.onload = () => heart.image.onload = () => requestAnimationFrame(gameLoop);
   </script>
+
 </body>
 </html>
