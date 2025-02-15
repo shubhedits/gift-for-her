@@ -8,7 +8,6 @@
     body {
       margin: 0;
       padding: 0;
-      /* Cute pastel gradient background */
       background: linear-gradient(135deg, #ffe6f0, #ffffff);
       overflow: hidden;
       font-family: 'Poppins', sans-serif;
@@ -22,7 +21,7 @@
     }
     /* Container for the canvas with drop shadow */
     #gameContainer {
-      width: 420px; /* canvas width + some extra for shadow margin */
+      width: 420px;
       margin: 30px auto;
       position: relative;
     }
@@ -72,9 +71,9 @@
   <h1>Catch My Heart</h1>
   
   <!-- Background Music (bgm.mp3) & Sound Effects -->
-  <audio id="bgm" src="assets/sounds/bgm.mp3" loop></audio>
-  <audio id="gameOverSound" src="assets/sounds/gameover.mp3"></audio>
-  <audio id="winSound" src="assets/sounds/win.mp3"></audio>
+  <audio id="bgm" src="bgm.mp3" loop></audio>
+  <audio id="gameOverSound" src="gameover.mp3"></audio>
+  <audio id="winSound" src="win.mp3"></audio>
   
   <div id="gameContainer">
     <canvas id="gameCanvas" width="400" height="600"></canvas>
@@ -101,7 +100,7 @@
     let heartsCaught = 0;
     const bombs = [];
 
-    // Array of encouraging messages for when she loses
+    // Array of encouraging messages for loss
     const loseMessages = [
       "BUGGGU, TRY AGAIN LOVE!",
       "My love, I know you can do it!",
@@ -110,7 +109,7 @@
       "One more try, love!"
     ];
 
-    // Bucket that follows the mouse/touch
+    // Bucket (follows mouse)
     const bucket = {
       x: canvas.width / 2 - 40,
       y: canvas.height - 50,
@@ -118,23 +117,22 @@
       height: 50,
       image: new Image()
     };
-    bucket.image.src = 'assets/images/bucket.png'; // Replace with your bucket image
+    bucket.image.src = 'bucket.png'; // Update with your bucket image
 
-    // Heart object with vertical and horizontal movement
+    // Heart object
     const heart = {
       x: Math.random() * (canvas.width - 30),
-      y: 0, // start at the top
+      y: 0,
       width: 30,
       height: 30,
       speed: 2 + Math.random() * 2,
-      dx: 1.5, // horizontal movement speed
+      dx: 1.5,
       image: new Image()
     };
-    heart.image.src = 'assets/images/heart.png'; // Replace with your heart image
+    heart.image.src = 'heart.png'; // Update with your heart image
 
-    // Bomb dimensions
+    // Bomb properties
     const bombWidth = 30, bombHeight = 30;
-    // Function to spawn a bomb at a random x position
     function spawnBomb() {
       const bomb = {
         x: Math.random() * (canvas.width - bombWidth),
@@ -142,36 +140,24 @@
         speed: 3 + Math.random() * 2,
         image: new Image()
       };
-      bomb.image.src = 'assets/images/bomb.png'; // Replace with your bomb image
+      bomb.image.src = 'bomb.png'; // Update with your bomb image
       bombs.push(bomb);
     }
-    
-    // Spawn bombs every 2.5 seconds
     let bombInterval = setInterval(spawnBomb, 2500);
 
     // Mouse movement for bucket
-    canvas.addEventListener('mousemove', function (e) {
+    canvas.addEventListener('mousemove', function(e) {
       const rect = canvas.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
       bucket.x = mouseX - bucket.width / 2;
       if (bucket.x < 0) bucket.x = 0;
       if (bucket.x + bucket.width > canvas.width) bucket.x = canvas.width - bucket.width;
     });
-    
-    // Touch movement for bucket (mobile)
-    canvas.addEventListener('touchmove', function(e) {
-      const rect = canvas.getBoundingClientRect();
-      const touchX = e.touches[0].clientX - rect.left;
-      bucket.x = touchX - bucket.width / 2;
-      if (bucket.x < 0) bucket.x = 0;
-      if (bucket.x + bucket.width > canvas.width) bucket.x = canvas.width - bucket.width;
-      e.preventDefault();
-    }, {passive: false});
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Draw visible boundaries with rounded corners
+      // Draw rounded boundaries
       ctx.strokeStyle = "#e91e63";
       ctx.lineWidth = 4;
       ctx.beginPath();
@@ -186,18 +172,14 @@
       ctx.quadraticCurveTo(0, 0, 10, 0);
       ctx.stroke();
       
-      // Draw bucket
+      // Draw bucket, heart, and bombs
       ctx.drawImage(bucket.image, bucket.x, bucket.y, bucket.width, bucket.height);
-      
-      // Draw heart
       ctx.drawImage(heart.image, heart.x, heart.y, heart.width, heart.height);
-      
-      // Draw bombs
       bombs.forEach(bomb => {
         ctx.drawImage(bomb.image, bomb.x, bomb.y, bombWidth, bombHeight);
       });
       
-      // Display score
+      // Score display
       ctx.fillStyle = "#e91e63";
       ctx.font = "18px Arial";
       ctx.fillText("Hearts: " + heartsCaught + "/10", 10, 25);
@@ -206,26 +188,16 @@
     function update() {
       if (gameOver) return;
       
-      // Update heart's position (vertical & horizontal)
+      // Update heart movement
       heart.y += heart.speed;
       heart.x += heart.dx;
-      
-      // Bounce heart off left/right boundaries
       if (heart.x <= 0 || heart.x + heart.width >= canvas.width) {
         heart.dx = -heart.dx;
       }
+      if (heart.y < 0) heart.y = 0;
+      if (heart.y > canvas.height) resetHeart();
       
-      // Prevent heart from going above the top boundary
-      if (heart.y < 0) {
-        heart.y = 0;
-      }
-      
-      // Reset heart if it goes off the bottom boundary
-      if (heart.y > canvas.height) {
-        resetHeart();
-      }
-      
-      // Check collision between heart and bucket
+      // Check collision for heart and bucket
       if (heart.y + heart.height >= bucket.y &&
           heart.x + heart.width >= bucket.x &&
           heart.x <= bucket.x + bucket.width) {
@@ -238,20 +210,16 @@
         }
       }
       
-      // Update bombs' positions and check for collisions
+      // Update bombs and check collisions
       for (let i = 0; i < bombs.length; i++) {
         let bomb = bombs[i];
         bomb.y += bomb.speed;
-        
-        // Check collision between bomb and bucket
         if (bomb.y + bombHeight >= bucket.y &&
             bomb.x + bombWidth >= bucket.x &&
             bomb.x <= bucket.x + bucket.width) {
           endGame("", false);
           return;
         }
-        
-        // Remove bombs that fall off the bottom boundary
         if (bomb.y > canvas.height) {
           bombs.splice(i, 1);
           i--;
@@ -263,7 +231,6 @@
       heart.y = -heart.height;
       heart.x = Math.random() * (canvas.width - heart.width);
       heart.speed = 2 + Math.random() * 2;
-      // Randomize horizontal speed direction
       heart.dx = (Math.random() < 0.5 ? -1 : 1) * (1 + Math.random());
     }
 
@@ -271,13 +238,11 @@
       gameOver = true;
       clearInterval(bombInterval);
       if (!win) {
-        // If lost, choose a random encouraging message and stop bgm
         const randomMessage = loseMessages[Math.floor(Math.random() * loseMessages.length)];
         message = randomMessage;
         document.getElementById('bgm').pause();
         document.getElementById('gameOverSound').play();
       } else {
-        // If win, stop bgm and play win sound
         document.getElementById('bgm').pause();
         document.getElementById('winSound').play();
       }
@@ -291,8 +256,6 @@
     }
 
     function retryGame() {
-      // Instead of a full page reload, we can reset the game state.
-      // For simplicity, here we reload the page.
       location.reload();
     }
 
@@ -306,7 +269,7 @@
       if (!gameOver) requestAnimationFrame(gameLoop);
     }
 
-    // Start the game once bucket and heart images have loaded
+    // Start game after images load
     bucket.image.onload = () => {
       heart.image.onload = () => {
         requestAnimationFrame(gameLoop);
