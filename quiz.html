@@ -3,23 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz - How Well Do You Know Us?</title>
+  <title>How Well Do You Know Us?</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       background: linear-gradient(135deg, #ffe6f0, #ffffff);
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
       color: #333;
+      text-align: center;
     }
     .container {
       max-width: 700px;
       margin: 30px auto;
       padding: 20px;
-      text-align: center;
     }
     h1 {
       color: #e91e63;
+      font-size: 2em;
     }
     img {
       max-width: 100%;
@@ -63,6 +64,7 @@
       color: white;
       cursor: pointer;
       display: none;
+      border-radius: 5px;
     }
     #result {
       margin-top: 20px;
@@ -83,21 +85,22 @@
       border: none;
       color: white;
       cursor: pointer;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>How Well Do You Know Us? - A Fun Quiz</h1>
-    <img src="kissing.gif" alt="Cute Kissing Gif" style="width:200px; margin:20px 0;">
+    <img src="assets/images/kissing.gif" alt="Cute Kissing Gif" style="width:200px; margin:20px 0;">
     
     <div id="quizSection">
       <!-- Question 1 -->
       <div class="question">
-        <h2>1. What is Loveleen’s favorite nickname that Rishu calls her?</h2>
+        <h2>1. What is Buggu’s favorite nickname that Rishu calls her?</h2>
         <div class="options">
           <div class="draggable" draggable="true" data-value="Lovu">Lovu</div>
-          <div class="draggable" draggable="true" data-value="BUGGU">BUGGU</div>
+          <div class="draggable" draggable="true" data-value="Chiku">Chiku</div>
           <div class="draggable" draggable="true" data-value="Puchki">Puchki</div>
           <div class="draggable" draggable="true" data-value="Bebo">Bebo</div>
         </div>
@@ -194,58 +197,45 @@
     <div id="result">
       <h2>10/10</h2>
       <p>OMMGGG YOU KNOW MEEE LOVE MUCHH, let's get married now you cute ass goblin.</p>
-      <button onclick="goToFinal()">Next</button>
+      <button onclick="goToLoveLetter()">Next</button>
     </div>
   </div>
 
   <script>
-    // Set up draggable events for each answer option
     const draggables = document.querySelectorAll('.draggable');
     draggables.forEach(item => {
       item.addEventListener('dragstart', dragStart);
     });
-
     function dragStart(event) {
       event.dataTransfer.setData("text/plain", event.target.getAttribute('data-value'));
     }
-
     function allowDrop(event) {
       event.preventDefault();
     }
-
     function drop(event) {
       event.preventDefault();
       const data = event.dataTransfer.getData("text/plain");
       const dropzone = event.currentTarget;
-      // Only allow drop if the dropzone is empty
       if (dropzone.children.length === 0) {
         dropzone.innerHTML = `<div class="draggable" draggable="false">${data}</div>`;
         checkAllAnswered();
       }
     }
-
     function checkAllAnswered() {
       const questions = document.querySelectorAll('.question');
       let allAnswered = true;
       questions.forEach(q => {
         const dropzone = q.querySelector('.dropzone');
-        if (dropzone.children.length === 0) {
-          allAnswered = false;
-        }
+        if (dropzone.children.length === 0) allAnswered = false;
       });
-      if (allAnswered) {
-        document.getElementById('submitButton').style.display = 'inline-block';
-      }
+      if (allAnswered) document.getElementById('submitButton').style.display = 'inline-block';
     }
-
     function submitQuiz() {
-      // When the quiz is submitted, hide the quiz section and show the result
       document.getElementById('quizSection').style.display = 'none';
       document.getElementById('submitButton').style.display = 'none';
       document.getElementById('result').style.display = 'block';
     }
-
-    function goToFinal() {
+    function goToLoveLetter() {
       window.location.href = 'final.html';
     }
   </script>
