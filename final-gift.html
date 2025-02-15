@@ -13,11 +13,11 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-family: 'Poppins', sans-serif;
       position: relative;
+      text-align: center;
     }
     .gift-container {
-      text-align: center;
       position: relative;
     }
     .gift-button {
@@ -35,7 +35,7 @@
     .gift-button:focus {
       outline: none;
     }
-    /* Arrow pointing at the gift button */
+    /* Animated arrow */
     .arrow {
       position: absolute;
       top: -80px;
@@ -62,14 +62,12 @@
     <div class="message" id="giftMessage"></div>
   </div>
   
-  <!-- Sound effect element -->
-  <audio id="clickSound" src="click.mp3"></audio>
+  <!-- Sound effect for gift click -->
+  <audio id="clickSound" src="assets/sounds/click.mp3"></audio>
   
   <script>
     function showGiftMessage() {
-      // Play sound effect on button click
       document.getElementById('clickSound').play();
-      // Show the playful message
       document.getElementById('giftMessage').textContent = "chut dikhao😉😏";
     }
   </script>
